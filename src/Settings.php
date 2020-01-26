@@ -25,6 +25,7 @@ class Settings {
 		$expected = array(
 			'id',
 			'title',
+			'page',
 		);
 
 		if ( ! Main::is_complete( $config, $expected ) ) {
@@ -34,7 +35,6 @@ class Settings {
 		$defaults = array(
 			'show_on'  => array(),
 			'hide_on'  => array(),
-			'page'     => ThemePlate()->slug,
 			'context'  => 'normal',
 			'priority' => 'default',
 		);
@@ -92,18 +92,17 @@ class Settings {
 	private function is_valid_screen() {
 
 		$screen = get_current_screen();
-		$prefix = ThemePlate()->key . '-';
 
-		if ( null === $screen || false === strpos( $screen->id, '_page_' . $prefix ) ) {
+		if ( null === $screen || false === strpos( $screen->id, '_page_' ) ) {
 			return false;
 		}
 
 		$page_s = (array) $this->config['page'];
-		$sparts = explode( $prefix, $screen->id );
+		$sparts = explode( '_page_', $screen->id );
 
 		foreach ( $page_s as $page ) {
 			if ( $sparts[1] === $page ) {
-				$this->page = $prefix . $page;
+				$this->page = $page;
 
 				return true;
 			}
