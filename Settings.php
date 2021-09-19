@@ -15,12 +15,12 @@ use ThemePlate\Core\Helper\Main;
 
 class Settings {
 
-	private $config;
-	private $form;
-	private $page;
+	private array $config;
+	private Form $form;
+	private string $page;
 
 
-	public function __construct( $config ) {
+	public function __construct( array $config ) {
 
 		$expected = array(
 			'id',
@@ -56,7 +56,7 @@ class Settings {
 	}
 
 
-	public function create() {
+	public function create(): void {
 
 		if ( ! $this->is_valid_screen() ) {
 			return;
@@ -71,14 +71,14 @@ class Settings {
 	}
 
 
-	public function add() {
+	public function add(): void {
 
 		$this->form->layout_postbox( $this->page );
 
 	}
 
 
-	public function scripts_styles() {
+	public function scripts_styles(): void {
 
 		if ( ! $this->is_valid_screen() ) {
 			return;
@@ -89,7 +89,7 @@ class Settings {
 	}
 
 
-	private function is_valid_screen() {
+	private function is_valid_screen(): bool {
 
 		$screen = get_current_screen();
 
