@@ -9,6 +9,7 @@
 
 namespace ThemePlate;
 
+use Exception;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Helper\Box;
 use ThemePlate\Core\Helper\Main;
@@ -29,7 +30,7 @@ class Settings {
 		);
 
 		if ( ! Main::is_complete( $config, $expected ) ) {
-			throw new \Exception();
+			throw new Exception();
 		}
 
 		$defaults = array(
@@ -46,8 +47,8 @@ class Settings {
 
 		try {
 			$this->form = new Form( $config );
-		} catch ( \Exception $e ) {
-			throw new \Exception( $e );
+		} catch ( Exception $e ) {
+			throw new Exception( $e );
 		}
 
 		add_action( 'current_screen', array( $this, 'create' ) );
