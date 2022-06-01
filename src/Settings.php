@@ -7,7 +7,7 @@
  * @since 0.1.0
  */
 
-namespace ThemePlate;
+namespace ThemePlate\Settings;
 
 use Exception;
 use ThemePlate\Core\Form;
