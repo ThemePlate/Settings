@@ -13,7 +13,6 @@ use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Helper\Box;
 use ThemePlate\Core\Helper\Form as FormHelper;
-use WP_Screen;
 
 class OptionBox extends Form {
 
@@ -60,10 +59,9 @@ class OptionBox extends Form {
 			register_setting( $menu_page, $menu_page );
 			add_filter( 'default_option_' . $menu_page, '__return_empty_array' );
 			add_filter( 'sanitize_option_' . $menu_page, array( $this, 'sanitize_option' ) );
+			add_action( 'themeplate_page_' . $menu_page . '_load', array( $this, 'on_wanted_page' ) );
 			add_action( 'themeplate_settings_' . $section, array( $this, 'layout_postbox' ), $priority );
 		}
-
-		add_action( 'current_screen', array( $this, 'maybe_wanted_page' ) );
 
 	}
 
@@ -77,20 +75,13 @@ class OptionBox extends Form {
 	}
 
 
-	public function maybe_wanted_page( WP_Screen $current_screen ): void {
+	public function on_wanted_page( array $config ): void {
 
-		if ( false === strpos( $current_screen->id, '_page_' ) ) {
+		if ( ! in_array( $config['menu_slug'], $this->menu_pages, true ) ) {
 			return;
 		}
 
-		$parts = explode( '_page_', $current_screen->id, 2 );
-		$index = array_search( $parts[1], $this->menu_pages, true );
-
-		if ( false === $index ) {
-			return;
-		}
-
-		$this->option_name = $this->menu_pages[ $index ];
+		$this->option_name = $config['menu_slug'];
 
 		add_action( 'admin_enqueue_scripts', array( FormHelper::class, 'enqueue_assets' ) );
 
