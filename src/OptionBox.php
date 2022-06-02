@@ -21,10 +21,6 @@ class OptionBox extends Form {
 	protected ?array $saved_values = null;
 
 
-	protected function initialize( array &$config ): void {
-	}
-
-
 	protected function fields_group_key(): string {
 
 		return $this->option_name;
