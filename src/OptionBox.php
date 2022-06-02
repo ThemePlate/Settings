@@ -44,7 +44,11 @@ class OptionBox extends Form {
 
 	protected function get_field_value( Field $field ) {
 
-		return $this->saved_values[ $field->data_key() ] ?? $field->get_config( 'default' );
+		$prefix = $this->config['data_prefix'];
+		$stored = $this->saved_values[ $field->data_key( $prefix ) ] ?? '';
+
+		// phpcs:ignore WordPress.PHP.DisallowShortTernary.Found
+		return $stored ?: $field->get_config( 'default' );
 
 	}
 
