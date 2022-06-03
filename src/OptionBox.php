@@ -13,7 +13,6 @@ use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Helper\Box;
 use ThemePlate\Core\Helper\Form as FormHelper;
-use ThemePlate\Core\Helper\Meta;
 
 class OptionBox extends Form {
 
@@ -37,13 +36,6 @@ class OptionBox extends Form {
 
 		$this->option_name  = $current_id;
 		$this->saved_values = get_option( $current_id );
-
-	}
-
-
-	protected function should_display_field( Field $field ): bool {
-
-		return Meta::should_display( $field->get_config(), $this->option_name );
 
 	}
 
