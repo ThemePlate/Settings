@@ -61,7 +61,7 @@ class OptionBox extends Form {
 			register_setting( $menu_page, $menu_page );
 			add_filter( 'default_option_' . $menu_page, '__return_empty_array' );
 			add_filter( 'sanitize_option_' . $menu_page, array( $this, 'sanitize_option' ) );
-			add_action( 'themeplate_page_' . $menu_page . '_load', array( $this, 'on_wanted_page' ) );
+			add_action( 'themeplate_page_' . $menu_page . '_load', array( FormHelper::class, 'enqueue_assets' ) );
 			add_action( 'themeplate_settings_' . $section, array( $this, 'layout_postbox' ), $priority );
 		}
 
@@ -73,19 +73,6 @@ class OptionBox extends Form {
 		$this->menu_pages[] = $page;
 
 		return $this;
-
-	}
-
-
-	public function on_wanted_page( array $config ): void {
-
-		if ( ! in_array( $config['menu_slug'], $this->menu_pages, true ) ) {
-			return;
-		}
-
-		$this->option_name = $config['menu_slug'];
-
-		add_action( 'admin_enqueue_scripts', array( FormHelper::class, 'enqueue_assets' ) );
 
 	}
 
