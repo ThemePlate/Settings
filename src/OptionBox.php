@@ -33,9 +33,10 @@ class OptionBox extends Form {
 	}
 
 
-	protected function maybe_nonce_fields(): void {
+	protected function maybe_nonce_fields( string $current_id ): void {
 
-		$this->saved_values = get_option( $this->option_name );
+		$this->option_name  = $current_id;
+		$this->saved_values = get_option( $current_id );
 
 	}
 
@@ -46,7 +47,8 @@ class OptionBox extends Form {
 
 	}
 
-	protected function get_field_value( Field $field ) {
+
+	protected function get_field_value( Field $field, string $current_id ) {
 
 		$prefix = $this->config['data_prefix'];
 		$stored = $this->saved_values[ $field->data_key( $prefix ) ] ?? '';
