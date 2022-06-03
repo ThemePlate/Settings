@@ -13,12 +13,17 @@ use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Helper\Box;
 use ThemePlate\Core\Helper\Form as FormHelper;
+use ThemePlate\Core\Helper\Meta;
 
 class OptionBox extends Form {
 
-	protected array $menu_pages    = array();
-	protected string $option_name  = '';
-	protected ?array $saved_values = null;
+	protected string $option_name = '';
+	protected array $menu_pages   = array();
+	protected array $saved_values = array();
+
+
+	protected function initialize( array &$config ): void {
+	}
 
 
 	protected function fields_group_key(): string {
@@ -28,13 +33,16 @@ class OptionBox extends Form {
 	}
 
 
+	protected function maybe_nonce_fields(): void {
+
+		$this->saved_values = get_option( $this->option_name );
+
+	}
+
+
 	protected function should_display_field( Field $field ): bool {
 
-		if ( null === $this->saved_values ) {
-			$this->saved_values = get_option( $this->option_name );
-		}
-
-		return true;
+		return Meta::should_display( $field->get_config(), $this->option_name );
 
 	}
 
