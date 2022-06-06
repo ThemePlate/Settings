@@ -9,6 +9,7 @@
 
 namespace ThemePlate\Settings;
 
+use ThemePlate\Core\Config;
 use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Helper\BoxHelper;
@@ -84,6 +85,13 @@ class OptionBox extends Form {
 		}
 
 		return BoxHelper::prepare_save( $value );
+
+	}
+
+
+	public function get_config(): Config {
+
+		return new Config( $this->config['data_prefix'], $this->menu_pages, $this->fields );
 
 	}
 

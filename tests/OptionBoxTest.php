@@ -37,7 +37,15 @@ class OptionBoxTest extends WP_UnitTestCase {
 	}
 
 	public function test_sanitize_option_value(): void {
-		$this->assertIsArray( $this->option_box->sanitize_option( null, 'test' ) );
-		$this->assertIsArray( $this->option_box->sanitize_option( array(), 'test' ) );
+		$this->assertIsArray( $this->option_box->sanitize_option( null ) );
+		$this->assertIsArray( $this->option_box->sanitize_option( array() ) );
+	}
+
+	public function test_get_config(): void {
+		$config = $this->option_box->get_config();
+
+		$this->assertSame( '', $config->get_prefix() );
+		$this->assertSame( array(), $config->get_types() );
+		$this->assertSame( null, $config->get_fields() );
 	}
 }
