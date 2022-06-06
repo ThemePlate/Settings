@@ -11,8 +11,8 @@ namespace ThemePlate\Settings;
 
 use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
-use ThemePlate\Core\Helper\Box;
-use ThemePlate\Core\Helper\Form as FormHelper;
+use ThemePlate\Core\Helper\BoxHelper;
+use ThemePlate\Core\Helper\FormHelper;
 
 class OptionBox extends Form {
 
@@ -53,7 +53,7 @@ class OptionBox extends Form {
 
 	public function create(): void {
 
-		$priority = Box::get_priority( $this->config );
+		$priority = BoxHelper::get_priority( $this->config );
 
 		foreach ( $this->menu_pages as $menu_page ) {
 			$section = $menu_page . '_' . $this->config['context'];
@@ -83,7 +83,7 @@ class OptionBox extends Form {
 			return array();
 		}
 
-		return Box::prepare_save( $value );
+		return BoxHelper::prepare_save( $value );
 
 	}
 

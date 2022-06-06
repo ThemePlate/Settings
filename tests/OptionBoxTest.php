@@ -6,7 +6,7 @@
 
 namespace Tests;
 
-use ThemePlate\Core\Helper\Form;
+use ThemePlate\Core\Helper\FormHelper;
 use ThemePlate\Settings\OptionBox;
 use WP_UnitTestCase;
 
@@ -31,7 +31,7 @@ class OptionBoxTest extends WP_UnitTestCase {
 		foreach ( $pages as $page ) {
 			$this->assertSame( 10, has_filter( 'default_option_' . $page, '__return_empty_array' ) );
 			$this->assertSame( 10, has_filter( 'sanitize_option_' . $page, array( $this->option_box, 'sanitize_option' ) ) );
-			$this->assertSame( 10, has_action( 'themeplate_page_' . $page . '_load', array( Form::class, 'enqueue_assets' ) ) );
+			$this->assertSame( 10, has_action( 'themeplate_page_' . $page . '_load', array( FormHelper::class, 'enqueue_assets' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_settings_' . $page . '_normal', array( $this->option_box, 'layout_postbox' ) ) );
 		}
 	}
