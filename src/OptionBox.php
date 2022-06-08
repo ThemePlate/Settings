@@ -10,8 +10,8 @@
 namespace ThemePlate\Settings;
 
 use ThemePlate\Core\Config;
-use ThemePlate\Core\Field;
 use ThemePlate\Core\Form;
+use ThemePlate\Core\Handler;
 use ThemePlate\Core\Helper\BoxHelper;
 use ThemePlate\Core\Helper\FormHelper;
 
@@ -19,7 +19,13 @@ class OptionBox extends Form {
 
 	protected string $option_name = '';
 	protected array $menu_pages   = array();
-	protected array $saved_values = array();
+
+
+	protected function get_handler(): Handler {
+
+		return new OptionHandler();
+
+	}
 
 
 	protected function initialize( array &$config ): void {
@@ -35,19 +41,7 @@ class OptionBox extends Form {
 
 	protected function maybe_nonce_fields( string $current_id ): void {
 
-		$this->option_name  = $current_id;
-		$this->saved_values = get_option( $current_id );
-
-	}
-
-
-	protected function get_field_value( Field $field, string $current_id ) {
-
-		$prefix = $this->config['data_prefix'];
-		$stored = $this->saved_values[ $field->data_key( $prefix ) ] ?? '';
-
-		// phpcs:ignore WordPress.PHP.DisallowShortTernary.Found
-		return $stored ?: $field->get_config( 'default' );
+		$this->option_name = $current_id;
 
 	}
 
@@ -91,7 +85,7 @@ class OptionBox extends Form {
 
 	public function get_config(): Config {
 
-		return new Config( $this->config['data_prefix'], $this->menu_pages, $this->fields );
+		return new Config( $this->config['data_prefix'], $this->fields );
 
 	}
 
