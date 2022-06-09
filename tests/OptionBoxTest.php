@@ -6,6 +6,10 @@
 
 namespace Tests;
 
+use ThemePlate\Core\Field\ColorField;
+use ThemePlate\Core\Field\EditorField;
+use ThemePlate\Core\Field\LinkField;
+use ThemePlate\Core\Field\SelectField;
 use ThemePlate\Core\Helper\FormHelper;
 use ThemePlate\Settings\OptionBox;
 use WP_UnitTestCase;
@@ -44,8 +48,24 @@ class OptionBoxTest extends WP_UnitTestCase {
 	public function test_get_config(): void {
 		$config = $this->option_box->get_config();
 
-		$this->assertSame( '', $config->get_prefix() );
-		$this->assertSame( array(), $config->get_types() );
-		$this->assertSame( null, $config->get_fields() );
+		$this->assertSame( array(), $config->get_fields() );
+
+		$this->option_box->fields(
+			array(
+				'test1' => array( 'type' => 'color' ),
+				'test2' => array( 'type' => 'editor' ),
+				'test3' => array( 'type' => 'link' ),
+				'test4' => array( 'type' => 'select' ),
+			),
+		);
+
+		$config = $this->option_box->get_config();
+		$fields = $config->get_fields();
+
+		$this->assertSame( 4, count( $fields ) );
+		$this->assertInstanceOf( ColorField::class, $fields['test1'] );
+		$this->assertInstanceOf( EditorField::class, $fields['test2'] );
+		$this->assertInstanceOf( LinkField::class, $fields['test3'] );
+		$this->assertInstanceOf( SelectField::class, $fields['test4'] );
 	}
 }
