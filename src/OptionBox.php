@@ -13,6 +13,7 @@ use ThemePlate\Core\Config;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Handler;
 use ThemePlate\Core\Helper\BoxHelper;
+use ThemePlate\Core\Helper\FieldsHelper;
 use ThemePlate\Core\Helper\FormHelper;
 
 class OptionBox extends Form {
@@ -50,11 +51,33 @@ class OptionBox extends Form {
 
 		$priority = BoxHelper::get_priority( $this->config );
 
+		$default = array();
+
+		$properties = array();
+
+		if ( null !== $this->fields ) {
+			foreach ( $this->fields->get_collection() as $field ) {
+				$default[ $field->data_key( $this->config['data_prefix'] ) ] = FieldsHelper::get_default_value( $field );
+			}
+
+			$properties = FieldsHelper::build_schema( $this->fields, $this->config['data_prefix'] );
+		}
+
+		$args = [
+			'default'      => $default,
+			'type'         => 'object',
+			'show_in_rest' => [
+				'schema' => [
+					'type'       => 'object',
+					'properties' => $properties,
+				],
+			],
+		];
+
 		foreach ( $this->menu_pages as $menu_page ) {
 			$section = $menu_page . '_' . $this->config['context'];
 
-			register_setting( $menu_page, $menu_page );
-			add_filter( 'default_option_' . $menu_page, '__return_empty_array' );
+			register_setting( $menu_page, $menu_page, $args );
 			add_filter( 'sanitize_option_' . $menu_page, array( $this, 'sanitize_option' ) );
 			add_action( 'themeplate_page_' . $menu_page . '_load', array( FormHelper::class, 'enqueue_assets' ) );
 			add_action( 'themeplate_settings_' . $section, array( $this, 'layout_postbox' ), $priority );
