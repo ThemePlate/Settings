@@ -30,13 +30,15 @@ class OptionBoxTest extends WP_UnitTestCase {
 
 		$this->option_box->create();
 
-		$this->assertSame( count( $pages ), did_action( 'register_setting' ) );
-
 		foreach ( $pages as $page ) {
 			$this->assertSame( 10, has_filter( 'sanitize_option_' . $page, array( $this->option_box, 'sanitize_option' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_page_' . $page . '_load', array( FormHelper::class, 'enqueue_assets' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_settings_' . $page . '_normal', array( $this->option_box, 'layout_postbox' ) ) );
+			$this->assertSame( 10, has_action( 'themeplate_setting_' . $page . '_default', array( $this->option_box, 'register_default' ) ) );
+			$this->assertSame( 10, has_action( 'themeplate_setting_' . $page . '_properties', array( $this->option_box, 'register_properties' ) ) );
 		}
+
+		$this->assertSame( 10, has_action( 'init', array( $this->option_box, 'register_setting' ) ) );
 	}
 
 	public function test_sanitize_option_value(): void {
