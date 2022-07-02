@@ -60,7 +60,11 @@ class OptionBox extends Form {
 			add_filter( 'themeplate_setting_' . $menu_page . '_schema', array( $this, 'build_schema' ), $priority );
 		}
 
-		add_action( 'init', array( $this, 'register_setting' ) );
+		if ( did_action( 'init' ) ) {
+			$this->register_setting();
+		} else {
+			add_action( 'init', array( $this, 'register_setting' ) ); // @codeCoverageIgnore
+		}
 
 	}
 
