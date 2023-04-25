@@ -30,7 +30,6 @@ class OptionHandlerTest extends WP_UnitTestCase {
 	public function test_handling_defaults(): void {
 		$option_name = 'default_tester';
 
-		add_filter( 'default_option_' . $option_name, '__return_empty_array' );
 		$this->assertSame( $this->default, $this->handler->get_value( $this->field, '', $option_name ) );
 	}
 
