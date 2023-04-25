@@ -11,6 +11,7 @@ namespace ThemePlate\Settings;
 
 use ThemePlate\Core\Handler;
 use ThemePlate\Core\Field;
+use ThemePlate\Core\Helper\MainHelper;
 
 class OptionHandler extends Handler {
 
@@ -26,7 +27,19 @@ class OptionHandler extends Handler {
 		$stored = $this->saved_values[ $field->data_key( $data_prefix ) ] ?? '';
 
 		// phpcs:ignore WordPress.PHP.DisallowShortTernary.Found
-		return $stored ?: $field->get_config( 'default' );
+		$value = $stored ?: $field->get_config( 'default' );
+
+		if (
+			$field->get_config( 'repeatable' ) &&
+			(
+				! is_array( $value ) ||
+				! MainHelper::is_sequential( $value )
+			)
+		) {
+			$value = array( $value );
+		}
+
+		return $value;
 
 	}
 

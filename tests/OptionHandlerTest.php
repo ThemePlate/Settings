@@ -47,4 +47,14 @@ class OptionHandlerTest extends WP_UnitTestCase {
 		add_option( $option_name, array( $data_prefix . $this->data_key => 'prefixed-value' ) );
 		$this->assertSame( 'prefixed-value', $this->handler->get_value( $this->field, $data_prefix, $option_name ) );
 	}
+
+	public function test_handling_repeatable(): void {
+		$option_name  = 'another_tester';
+		$data_prefix  = 'another_data_';
+		$option_value = 'another-value';
+
+		add_option( $option_name, array( $data_prefix . $this->data_key => $option_value ) );
+		$this->assertSame( array( $option_value ), $this->handler->get_value( $this->field, $data_prefix, $option_name ) );
+		$this->assertSame( array( $this->default ), $this->handler->get_value( $this->field, '', $option_name ) );
+	}
 }
