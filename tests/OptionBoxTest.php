@@ -12,6 +12,7 @@ use ThemePlate\Core\Field\LinkField;
 use ThemePlate\Core\Field\SelectField;
 use ThemePlate\Core\Helper\FormHelper;
 use ThemePlate\Settings\OptionBox;
+use ThemePlate\Settings\OptionHelpers;
 use WP_UnitTestCase;
 
 class OptionBoxTest extends WP_UnitTestCase {
@@ -31,16 +32,11 @@ class OptionBoxTest extends WP_UnitTestCase {
 		$this->option_box->create();
 
 		foreach ( $pages as $page ) {
-			$this->assertSame( 10, has_filter( 'sanitize_option_' . $page, array( $this->option_box, 'sanitize_option' ) ) );
+			$this->assertSame( 10, has_filter( 'sanitize_option_' . $page, array( OptionHelpers::class, 'sanitize' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_page_' . $page . '_load', array( FormHelper::class, 'enqueue_assets' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_settings_' . $page . '_normal', array( $this->option_box, 'layout_postbox' ) ) );
 			$this->assertSame( 10, has_action( 'themeplate_setting_' . $page . '_schema', array( $this->option_box, 'build_schema' ) ) );
 		}
-	}
-
-	public function test_sanitize_option_value(): void {
-		$this->assertIsArray( $this->option_box->sanitize_option( null, '' ) );
-		$this->assertIsArray( $this->option_box->sanitize_option( array(), '' ) );
 	}
 
 	public function test_get_config(): void {
