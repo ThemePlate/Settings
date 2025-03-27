@@ -13,7 +13,6 @@ class OptionHelpersTest extends WP_UnitTestCase {
 	public function test_schema_default(): void {
 		$result = OptionHelpers::schema_default( 'test' );
 
-		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'schema', $result );
 		$this->assertArrayHasKey( 'default', $result );
 		$this->assertIsArray( $result['schema'] );
@@ -21,7 +20,16 @@ class OptionHelpersTest extends WP_UnitTestCase {
 	}
 
 	public function test_sanitize_option_value(): void {
-		$this->assertIsArray( OptionHelpers::sanitize( null, '' ) );
-		$this->assertIsArray( OptionHelpers::sanitize( array(), '' ) );
+		add_filter(
+			'themeplate_setting_test_schema',
+			function () {
+				return array( 'key' => array( 'default' => 'value' ) );
+			}
+		);
+
+		$this->assertSame( array(), OptionHelpers::sanitize( null, 'test' ) );
+		$this->assertSame( array(), OptionHelpers::sanitize( array(), 'test' ) );
+		$this->assertSame( array( 'key' => 'value' ), OptionHelpers::sanitize( array( 'key' => '' ), 'test' ) );
+		$this->assertSame( array( 'key' => 'custom' ), OptionHelpers::sanitize( array( 'key' => 'custom' ), 'test' ) );
 	}
 }
