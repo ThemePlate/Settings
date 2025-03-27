@@ -10,6 +10,7 @@
 namespace ThemePlate\Settings;
 
 use ThemePlate\Core\Config;
+use ThemePlate\Core\Fields;
 use ThemePlate\Core\Form;
 use ThemePlate\Core\Handler;
 use ThemePlate\Core\Helper\BoxHelper;
@@ -87,7 +88,7 @@ class OptionBox extends Form {
 
 	public function build_schema( array $data ): array {
 
-		if ( null === $this->fields ) {
+		if ( ! $this->fields instanceof Fields ) {
 			return $data;
 		}
 

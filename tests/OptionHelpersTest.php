@@ -22,7 +22,7 @@ class OptionHelpersTest extends WP_UnitTestCase {
 	public function test_sanitize_option_value(): void {
 		add_filter(
 			'themeplate_setting_test_schema',
-			function () {
+			function (): array {
 				return array( 'key' => array( 'default' => 'value' ) );
 			}
 		);
