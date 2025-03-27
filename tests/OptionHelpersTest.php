@@ -19,6 +19,29 @@ class OptionHelpersTest extends WP_UnitTestCase {
 		$this->assertIsArray( $result['default'] );
 	}
 
+	public static function for_schema_default_values(): array {
+		return array(
+			'empty'   => array( array(), '' ),
+			'missing' => array( array( 'key' => 'value' ), '' ),
+			'custom'  => array( array( 'default' => 'custom' ), 'custom' ),
+			'invalid' => array( (object) array( 'default' => 'value' ), '' ),
+		);
+	}
+
+	/** @dataProvider for_schema_default_values */
+	public function test_schema_default_values( $field, $expected ): void {
+		add_filter(
+			'themeplate_setting_test_schema',
+			function () use ( $field ): array {
+				return array( 'key' => $field );
+			}
+		);
+
+		$result = OptionHelpers::schema_default( 'test' );
+
+		$this->assertSame( array( 'key' => $expected ), $result['default'] );
+	}
+
 	public function test_sanitize_option_value(): void {
 		add_filter(
 			'themeplate_setting_test_schema',
