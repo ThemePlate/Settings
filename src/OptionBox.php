@@ -79,6 +79,15 @@ class OptionBox extends Form {
 	}
 
 
+	public function fields( array $collection ): self {
+
+		$this->fields = new Fields( $collection );
+
+		return $this;
+
+	}
+
+
 	public function get_config(): Config {
 
 		return new Config( $this->config['data_prefix'], $this->fields );
