@@ -32,9 +32,7 @@ class OptionHelpersTest extends WP_UnitTestCase {
 	public function test_schema_default_values( $field, $expected ): void {
 		add_filter(
 			'themeplate_setting_test_schema',
-			function () use ( $field ): array {
-				return array( 'key' => $field );
-			}
+			fn(): array => array( 'key' => $field )
 		);
 
 		$result = OptionHelpers::schema_default( 'test' );
@@ -45,9 +43,7 @@ class OptionHelpersTest extends WP_UnitTestCase {
 	public function test_sanitize_option_value(): void {
 		add_filter(
 			'themeplate_setting_test_schema',
-			function (): array {
-				return array( 'key' => array( 'default' => 'value' ) );
-			}
+			fn(): array => array( 'key' => array( 'default' => 'value' ) )
 		);
 
 		$this->assertSame( array(), OptionHelpers::sanitize( null, 'test' ) );
