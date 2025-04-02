@@ -36,7 +36,7 @@ class OptionHandler extends Handler {
 				! MainHelper::is_sequential( $value )
 			)
 		) {
-			$value = array( $value );
+			return array( $value );
 		}
 
 		return $value;

@@ -13,6 +13,7 @@ use WP_UnitTestCase;
 class OptionHandlerTest extends WP_UnitTestCase {
 	private OptionHandler $handler;
 	private InputField $field;
+
 	private string $data_key = 'test';
 	private string $default  = 'important!';
 
