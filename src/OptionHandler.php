@@ -15,6 +15,7 @@ use ThemePlate\Core\Helper\MainHelper;
 
 class OptionHandler extends Handler {
 
+	/** @var null|array<string, mixed> */
 	protected ?array $saved_values = null;
 
 

@@ -15,10 +15,11 @@ class OptionHelpersTest extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( 'schema', $result );
 		$this->assertArrayHasKey( 'default', $result );
-		$this->assertIsArray( $result['schema'] );
-		$this->assertIsArray( $result['default'] );
+		$this->assertEmpty( $result['schema'] );
+		$this->assertEmpty( $result['default'] );
 	}
 
+	/** @return array<string, array<int, string|array{}|array<string, string>|object{default: string}>> */
 	public static function for_schema_default_values(): array {
 		return array(
 			'empty'   => array( array(), '' ),
@@ -28,8 +29,11 @@ class OptionHelpersTest extends WP_UnitTestCase {
 		);
 	}
 
-	/** @dataProvider for_schema_default_values */
-	public function test_schema_default_values( $field, $expected ): void {
+	/**
+	 * @param array{}|array<string, string>|object{default: string} $field
+	 * @dataProvider for_schema_default_values
+	 */
+	public function test_schema_default_values( $field, string $expected ): void {
 		add_filter(
 			'themeplate_setting_test_schema',
 			fn(): array => array( 'key' => $field )

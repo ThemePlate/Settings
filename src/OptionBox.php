@@ -20,7 +20,9 @@ use ThemePlate\Core\Helper\FormHelper;
 class OptionBox extends Form {
 
 	protected string $option_name = '';
-	protected array $menu_pages   = array();
+
+	/** @var string[] */
+	protected array $menu_pages = array();
 
 
 	protected function get_handler(): Handler {
@@ -30,6 +32,12 @@ class OptionBox extends Form {
 	}
 
 
+	/**
+	 * @param array{
+	 *     context: string,
+	 *     data_prefix: string,
+	 * } $config
+	 */
 	protected function initialize( array &$config ): void {
 	}
 
@@ -79,6 +87,7 @@ class OptionBox extends Form {
 	}
 
 
+	/** @param array<string, Field|mixed> $collection */
 	public function fields( array $collection ): self {
 
 		$this->fields = new Fields( $collection );
@@ -95,6 +104,10 @@ class OptionBox extends Form {
 	}
 
 
+	/**
+	 * @param array<mixed> $data
+	 * @return array<mixed>
+	 */
 	public function build_schema( array $data ): array {
 
 		if ( ! $this->fields instanceof Fields ) {

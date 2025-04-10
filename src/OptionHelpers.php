@@ -13,6 +13,7 @@ use ThemePlate\Core\Helper\BoxHelper;
 
 class OptionHelpers {
 
+	/** @return array{schema: array{}|array<string, string>, default: array<string, string>} */
 	public static function schema_default( string $menu_page ): array {
 
 		$schema  = (array) apply_filters( 'themeplate_setting_' . $menu_page . '_schema', array() );
@@ -32,6 +33,10 @@ class OptionHelpers {
 	}
 
 
+	/**
+	 * @param null|array<string, mixed> $value
+	 * @return array{}|array<string, mixed>
+	 */
 	public static function sanitize( ?array $value, string $menu_page ): array {
 
 		if ( null === $value ) {
